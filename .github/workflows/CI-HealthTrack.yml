@@ -61,7 +61,7 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-          
+
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -84,9 +84,6 @@ jobs:
 
       - name: Crear carpetas de reporte
         run: mkdir -p jmeter-reports/html-report
-
-      - name: Verificar existencia del archivo JMX
-        run: ls -l backend/
 
       - name: Ejecutar pruebas JMeter
         run: |

@@ -83,19 +83,10 @@ jobs:
           tar -xzf apache-jmeter-5.6.3.tgz
           echo "${PWD}/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
 
-      - name: Levantar aplicación Spring Boot
+      - name: Levantar la aplicación Spring Boot
         run: |
           nohup mvn spring-boot:run > log.txt 2>&1 &
-          echo "Esperando que la app esté arriba en localhost:8080"
-          for i in {1..10}; do
-            if curl -s http://localhost:8080/actuator/health | grep UP; then
-              echo "✅ Aplicación disponible"
-              break
-            else
-              echo "⏳ Esperando..."
-              sleep 5
-            fi
-          done
+          sleep 20
 
       - name: Crear carpetas de reporte
         run: mkdir -p jmeter-reports/html-report

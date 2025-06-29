@@ -1,0 +1,1 @@
+# 🚀 Automatización de Pruebas en una Plataforma de Salud

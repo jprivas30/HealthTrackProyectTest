@@ -61,7 +61,7 @@ El proyecto cuenta con un pipeline automatizado que se ejecuta al hacer push a l
 
 - Selenium
 
-![alt text](src/main/resources/static/images/SeleniunCorriendoGHActions.png)
+![alt text](src/main/resources/static/images/PruebasSelenium.png)
 
 - Jmeter
 
@@ -74,6 +74,10 @@ El proyecto cuenta con un pipeline automatizado que se ejecuta al hacer push a l
 - SonarQube
 
 ![alt text](src/main/resources/static/images/SonarQube.png)
+
+- GitHub Actions
+
+![alt text](src/main/resources/static/images/GHAcorriendo.png)
 
 - App Corriendo
 

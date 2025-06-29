@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>HealthTrack</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: #f7f7f7;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+    }
+    #resultado {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Actualizar Peso</h1>
+  <form id="pesoForm">
+    <input type="text" id="usuarioId" placeholder="ID de usuario" required />
+    <input type="number" id="nuevoPeso" placeholder="Nuevo peso" required step="0.1" />
+    <button type="submit">Actualizar</button>
+  </form>
+  <div id="resultado"></div>
+
+  <script>
+    document.getElementById("pesoForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const id = document.getElementById("usuarioId").value.trim();
+      const peso = parseFloat(document.getElementById("nuevoPeso").value);
+
+      const resultado = document.getElementById("resultado");
+      resultado.classList.remove("error");
+      resultado.innerText = "Actualizando...";
+
+      try {
+        const res = await fetch(`/api/usuarios/${id}/peso`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ peso })
+        });
+
+        if (!res.ok) throw new Error("Error en la solicitud");
+
+        const data = await res.json();
+        console.log("Respuesta del backend:", data);
+
+        if (data.peso !== undefined) {
+          resultado.innerText = `Peso actualizado del usuario ${id} es: ${data.peso} kg`;
+        } else {
+          resultado.innerText = "Error: el backend no devolvió el peso.";
+          resultado.classList.add("error");
+        }
+
+      } catch (error) {
+        console.error(error);
+        resultado.innerText = "Error actualizando el peso";
+        resultado.classList.add("error");
+      }
+    });
+  </script>
+</body>
+</html>

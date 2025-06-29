@@ -43,14 +43,11 @@ jobs:
       - name: Levantar aplicación Spring Boot
         run: |
           nohup mvn spring-boot:run > log.txt 2>&1 &
-          echo "Esperando que la aplicación esté disponible..."
-          for i in {1..10}; do
-            curl -s http://localhost:8080/api/usuarios && break || sleep 5
-          done
-      
+          sleep 10
+
       - name: Esperar que la aplicación esté lista
         run: |
-          echo "Esperando que la app esté disponible en http://localhost:8080/api/usuarios ..."
+          echo "Esperando a que la aplicación responda..."
           for i in {1..15}; do
             if curl -s http://localhost:8080/api/usuarios > /dev/null; then
               echo "✅ La app está lista."

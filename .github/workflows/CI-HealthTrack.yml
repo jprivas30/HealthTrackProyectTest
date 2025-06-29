@@ -48,10 +48,24 @@ jobs:
       - name: Ejecutar pruebas Selenium (IT)
         run: mvn verify -Dtest=UsuarioSeleniumIT
 
-      - name: Escaneo SonarQube
-        uses: SonarSource/sonarqube-scan-action@v5
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+          
+      - name: Build and analyze
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKENS }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=jprivas30_HealthTrackProyectTest
 
   performance-test:
     name: Pruebas de Rendimiento con JMeter
@@ -71,11 +85,14 @@ jobs:
       - name: Crear carpetas de reporte
         run: mkdir -p jmeter-reports/html-report
 
+      - name: Verificar existencia del archivo JMX
+        run: ls -l backend/
+
       - name: Ejecutar pruebas JMeter
         run: |
-          jmeter -n -t backend/HealthTrackProyect.jmx \
-                 -l jmeter-reports/resultados.jtl \
-                 -e -o jmeter-reports/html-report
+          jmeter -n -t HealthTrackProyect.jmx \
+          -l jmeter-reports/resultados.jtl \
+          -e -o jmeter-reports/html-report
 
       - name: Subir reporte JMeter
         uses: actions/upload-artifact@v4

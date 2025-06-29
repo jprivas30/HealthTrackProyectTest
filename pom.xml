@@ -23,6 +23,8 @@
         <webdrivermanager.version>5.8.0</webdrivermanager.version>
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <maven.failsafe.plugin.version>3.2.5</maven.failsafe.plugin.version>
+        <sonar.organization>jprivas30</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>
